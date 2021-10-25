@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>3D</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<script src="js/echarts.min.js"></script>
+		<script src="js/echarts-gl.min.js"></script>
+		<script src="js/mapbox-gl.js"></script>
+		<link href="js/mapbox-gl.css" rel="stylesheet" />
+		<script src="js/d3.min.js" charset="utf-8"></script>
+		<style type="text/css">
+			#main {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div id="main"></div>
+		<script type="text/javascript">
+			mapboxgl.accessToken = 'pk.eyJ1IjoiY3NqMTIxMzgiLCJhIjoiY2tiMDdhb2FwMDU5YjJxbzNidTUzdXM1ZCJ9.LNxHiLbA7Gii1mPdWtZNsw';
+			d3.json('json/data.json', data => {
+				console.log(data)
+				draw(data.map)
+			})
+
+			function draw(d) {
+				var main=document.getElementById('main')
+				var chart = echarts.init(main);
+				var option = {
+					mapbox: {
+						center: [108.55, 36.27],
+						zoom: 4,
+						pitch: 60,
+					},
+					visualMap: {
+						min: 0,
+						max: 1,
+						color: ['rgb(238,222,223)', 'rgb(200,226,233)', 'rgb(173,206,215)'],
+					},
+					series: [{
+						type: 'scatter3D',
+						coordinateSystem: 'mapbox',
+						data: d
+					}]
+				}
+				chart.setOption(option);
+			}
+		</script>
+	</body>
+</html>

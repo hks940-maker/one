@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>D3 Map</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script charset="utf-8">
+			var projection = d3.geo.mercator().scale(750).center([101, 42]);
+			var path = d3.geo.path().projection(projection)
+			var svg = d3.select("body")
+				.append("svg")
+				.attr("width", 1000)
+				.attr("height", 1000)
+				.style('border','black solid 1px');
+			var color = d3.scale.category10();
+
+			d3.json("json/china.json", function(data) {
+				svg.selectAll("path")
+					.data(data.features)
+					.enter()
+					.append("path")
+					.attr("stroke", "#000")
+					.attr("stroke-width", 1)
+					.attr("fill", function(d, i) {
+						return color(i);
+					})
+					.attr("d", path)
+					.on("mouseover", function(d, i) {
+						d3.select(this)
+							.attr("fill", "yellow");
+					})
+					.on("mouseout", function(d, i) {
+						d3.select(this)
+							.attr("fill", color(i));
+					});
+
+			})
+		</script>
+	</body>
+</html>
